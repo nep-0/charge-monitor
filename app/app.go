@@ -54,14 +54,17 @@ func (a *App) corsMiddleware(handler http.HandlerFunc) http.HandlerFunc {
 
 func (a *App) poll() {
 	for {
+		errorCount := 0
 		for _, outletId := range a.outlets {
 			power, usedMinutes, err := query.QueryChargeStatus(outletId)
 			if err != nil {
 				slog.Error("Failed to query charge status", "outletId", outletId, "error", err)
+				errorCount++
 				continue
 			}
 			a.cache.Set(outletId, cache.OutletInfo{Power: power, UsedMinutes: usedMinutes})
 			time.Sleep(a.pollingInterval)
 		}
+		slog.Info("Completed a full polling cycle", "errors", errorCount)
 	}
 }
