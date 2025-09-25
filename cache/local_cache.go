@@ -70,7 +70,7 @@ func (c *LocalCache) LoadFromJSON(data []byte) error {
 	// This is a naive implementation and assumes well-formed input
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	var jsonData map[string]map[string]interface{}
+	var jsonData map[string]map[string]any
 	if err := json.Unmarshal(data, &jsonData); err != nil {
 		return err
 	}

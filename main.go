@@ -11,5 +11,6 @@ func main() {
 		panic(err)
 	}
 	a := app.NewApp(config.Outlets, config.PollingInterval, config.HTTPAddress)
+	config.LiveReload(a.UpdateOutlets)
 	a.ServeHTTP()
 }

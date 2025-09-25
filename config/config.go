@@ -3,6 +3,7 @@ package config
 import (
 	"log/slog"
 
+	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
 
@@ -23,4 +24,17 @@ func ConfigFromFile() (*Config, error) {
 	}
 	slog.Info("Outlets loaded", "count", len(conf.Outlets))
 	return &conf, nil
+}
+
+func (c *Config) LiveReload(onChange func([]string)) {
+	viper.WatchConfig()
+	viper.OnConfigChange(func(e fsnotify.Event) {
+		slog.Info("Config file changed", "file", e.Name)
+		if err := viper.Unmarshal(c); err != nil {
+			slog.Error("Failed to reload config", "error", err)
+		} else {
+			slog.Info("Config reloaded successfully", "outlets", len(c.Outlets))
+			onChange(c.Outlets)
+		}
+	})
 }

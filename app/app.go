@@ -24,6 +24,10 @@ func NewApp(outlets []string, pollingInterval int64, httpAddress string) *App {
 	}
 }
 
+func (a *App) UpdateOutlets(outlets []string) {
+	a.outlets = outlets
+}
+
 func (a *App) ServeHTTP() {
 	go a.poll()
 	http.HandleFunc("/outlets", a.corsMiddleware(a.getOutlets))
