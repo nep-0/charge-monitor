@@ -7,8 +7,10 @@ import (
 	"resty.dev/v3"
 )
 
+// create client once
+var client = resty.New()
+
 func QueryChargeStatus(outletId string) (string, int64, error) {
-	client := resty.New()
 	resp, err := client.R().Get("https://wemp.issks.com/charge/v1/charging/outlet/" + outletId)
 
 	if err != nil {
