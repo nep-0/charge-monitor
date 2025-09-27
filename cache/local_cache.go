@@ -43,6 +43,7 @@ func (c *LocalCache) JSON() []byte {
 	}
 
 	var builder strings.Builder
+	builder.Grow(len(c.data)*80 + 2) // reduce allocations
 	builder.WriteString("{")
 	first := true
 	for id, info := range c.data {
@@ -51,7 +52,7 @@ func (c *LocalCache) JSON() []byte {
 		}
 		builder.WriteString("\"")
 		builder.WriteString(id)
-		builder.WriteString("\": {")
+		builder.WriteString("\":{")
 		builder.WriteString("\"power\":\"")
 		builder.WriteString(info.Power)
 		builder.WriteString("\",\"updated_at\":")

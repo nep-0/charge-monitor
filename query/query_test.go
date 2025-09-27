@@ -163,7 +163,7 @@ func queryChargeStatusWithBaseURL(outletId string, baseURL string) (string, erro
 // Integration test (will make real HTTP request)
 // Run with: go test -tags=integration
 func TestQueryChargeStatus_Integration(t *testing.T) {
-	outletId := "O211127011409978"
+	outletId := "O201222013860646"
 	power, usedMinutes, err := QueryChargeStatus(outletId)
 
 	if err != nil {
