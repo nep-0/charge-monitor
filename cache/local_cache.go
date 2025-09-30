@@ -69,12 +69,12 @@ func (c *LocalCache) JSON() []byte {
 func (c *LocalCache) LoadFromJSON(data []byte) error {
 	// Simple JSON deserialization without external libraries
 	// This is a naive implementation and assumes well-formed input
-	c.mu.Lock()
-	defer c.mu.Unlock()
 	var jsonData map[string]map[string]any
 	if err := json.Unmarshal(data, &jsonData); err != nil {
 		return err
 	}
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	for id, info := range jsonData {
 		outletInfo := OutletInfo{
 			Power:       info["power"].(string),
